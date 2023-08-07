@@ -14,6 +14,7 @@ public:
 
 private:
     QString path;
+    int sizeN;
     QString textsvg;
     QList<QString> rectList;
 

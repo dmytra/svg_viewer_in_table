@@ -11,9 +11,56 @@ svg_viewer::svg_viewer(QWidget *parent)
 {
     on_loadButton_clicked();
 
+    QString newPath = QFileDialog::getOpenFileName(this,  "Open SVG",
+                                                   path, "SVG files (*.svg)");
+    if (newPath.isEmpty())
+        return;
+
+    path = newPath;
+    QDomDocument doc;
+
+    //    QDomDocument d;
+    //    QString someXML;
+    //    d.setContent(someXML);
+    //    QDomNode n = d.firstChild();
+    //    while (!n.isNull()) {
+    //        if (n.isElement()) {
+    //            QDomElement e = n.toElement();
+    //            cout << "Element name: " << qPrintable(e.tagName()) << '\n';
+    //            break;
+    //        }
+    //        n = n.nextSibling();
+    //    }
+
+    QFile file(path);
+    //if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (file.open(QIODevice::ReadOnly) | doc.setContent(&file))
+    {
+        // Ищем в документе все объекты с тегом g
+        QDomNodeList gList = doc.elementsByTagName("g");
+        // Начинаем их перебирать
+
+        sizeN = gList.size();
+        for (int i = 0; i < gList.size(); i++) {
+
+            //QDomText text = gList.at(i).toText();
+
+            QDomNode gNode = gList.item(i);     // Выделяем из списка ноду
+
+            QString line;
+            QTextStream stream(&line);
+            gNode.save(stream, 0);
+
+            qDebug() << line;
+            rectList << line;
+        }
+    }
+
     QHBoxLayout *hbox = new QHBoxLayout(this);
 
-    QTableWidget *table = new QTableWidget(111, 2, this);
+    QTableWidget *table = new QTableWidget(sizeN, 2, this);
+
+        file.close();
 
     hbox->addWidget(table);
 
@@ -24,10 +71,6 @@ svg_viewer::svg_viewer(QWidget *parent)
 
     table->setHorizontalHeaderLabels({"Name", "Age"});
 
-//    QTableWidgetItem *item1 = new QTableWidgetItem("John");
-//    QTableWidgetItem *item2 = new QTableWidgetItem("30");
-//    table->setItem(0, 0, item1);
-//    table->setItem(0, 1, item2);
 
         int i=0;
     foreach( QString item, rectList )
@@ -37,7 +80,8 @@ svg_viewer::svg_viewer(QWidget *parent)
                 QTableWidgetItem *item2 = new QTableWidgetItem(item);
 
             table->setItem(i, 0, item1);
-                  table->setItem(i, 1, item2);
+            table->setItem(i, 1, item2);
+
             i++;
 
         qDebug() << item;
@@ -54,30 +98,6 @@ svg_viewer::~svg_viewer()
 
 void svg_viewer::on_loadButton_clicked()
 {
-    QString newPath = QFileDialog::getOpenFileName(this,  "Open SVG",
-                                                   path, "SVG files (*.svg)");
-    if (newPath.isEmpty())
-        return;
 
-    //QList<QString> rectList;
-
-    path = newPath;
-    QDomDocument doc;
-
-
-    QFile file(path);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-    while (!file.atEnd()) {
-            QString line = file.readLine();
-    rectList << line;
-    }
-
-
-    file.close();
-
- //   foreach (QGraphicsRectItem *item, rectList) {
-//        QGraphicsRectItem *rect = item;
-//        scene->addItem(rect);
 
 }
-
