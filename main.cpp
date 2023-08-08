@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
     svg_viewer w;
     w.resize(1000,800);
     w.show();
