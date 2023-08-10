@@ -19,10 +19,31 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>981</width>
+      <width>521</width>
       <height>741</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>10</y>
+      <width>451</width>
+      <height>211</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>230</y>
+      <width>451</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout"/>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

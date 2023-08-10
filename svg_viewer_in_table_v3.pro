@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp\
+    mygraphicview.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h\
+    mygraphicview.h
 
 FORMS += \
     mainwindow.ui
@@ -23,7 +25,26 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
+macx {
+ICON = icon.icns
+}
+
+unix:!macx{
+# linux only in :/other files
+}
+
+win32 {
+RC_ICONS = icon.ico
+}
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    icon.icns \
+    icon.ico
+
+RESOURCES += \
+    res.qrc

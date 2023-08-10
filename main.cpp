@@ -17,6 +17,18 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
+    QString filePathMain;
+
+    if (argc == 1)
+        filePathMain = QLatin1String(":/two_block.svg");
+    else if (argc == 2)
+        filePathMain = argv[1];
+    else {
+        qDebug() << QLatin1String("Please specify an svg file!");
+        return -1;
+    }
+
     MainWindow w;
     w.show();
     w.resize(1000,800);
