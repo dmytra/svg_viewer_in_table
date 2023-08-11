@@ -6,6 +6,13 @@
 #include <QStandardItemModel>
 #include <QItemSelectionModel>
 #include "mygraphicview.h"
+#include "newfileclass.h"
+
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QSvgGenerator>
+#include <QFileDialog>
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,21 +26,28 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QString path;
     int sizeN;
     QString textsvg;
     QList<QString> rectList;
+    void setPath(QString);
+    QString getPath();
 
 private:
     Ui::MainWindow *ui;
 
-    MyGraphicView   *myPicture;
+    QString path;
+
+    QGraphicsScene *scene;  // Графическая сцена
 
     QStandardItemModel *m_model;                        //модель данных
     QItemSelectionModel *m_seleModel;
 
+    void on_load();
+    void     on_loadButton_clickedSVG();
+
 private slots:
     void on_loadButton_clicked();
+
     void on_currentSelect(const QModelIndex &current, const QModelIndex &previous);
 };
 #endif // MAINWINDOW_H

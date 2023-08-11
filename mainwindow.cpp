@@ -1,10 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "svgreader.h"
 
 #include <QFileDialog>
 #include <QDomDocument>
 #include <QDebug>
 #include <QPushButton>
+#include <QSvgWidget>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,11 +32,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(pushButton, SIGNAL(clicked()), this, SLOT(on_loadButton_clicked() ) );
 
+    scene = new QGraphicsScene();
+    ui->graphicsView->setScene(scene);
 
-    /* Initialize a widget with graphics */
-    myPicture   = new MyGraphicView();
-    /* and add it to a layer */
-    ui->gridLayout->addWidget(myPicture);
+}
+
+void MainWindow::setPath(QString setpath) {
+    path = setpath;
+}
+
+QString MainWindow::getPath() {
+    return path;
+
 }
 
 MainWindow::~MainWindow()
@@ -50,9 +60,7 @@ void MainWindow::on_currentSelect(const QModelIndex &current, const QModelIndex 
             item = m_model->itemFromIndex(current);
             ui->textEdit->setText(item->text());
             qDebug() << item->text();
-
-
-
+            on_loadButton_clickedSVG();
         }
 }
 
@@ -65,6 +73,11 @@ void MainWindow::on_loadButton_clicked()
 
     path = newPath;
 
+    on_load();
+}
+
+void MainWindow::on_load()
+{
     QDomDocument doc;
 
     QFile file(path);
@@ -81,7 +94,7 @@ void MainWindow::on_loadButton_clicked()
             QTextStream stream(&line);
             gNode.save(stream, 0);
 
-            qDebug() << line;
+            //qDebug() << line;
             rectList << line;
         }
 
@@ -97,4 +110,22 @@ void MainWindow::on_loadButton_clicked()
         }
     }
     file.close();
+}
+
+
+void MainWindow::on_loadButton_clickedSVG()
+{
+
+    if (path.isEmpty())
+        return;
+
+    scene->clear();
+
+    scene->setSceneRect(SvgReader::getSizes(path)); // Зададим размеры графической сцены
+
+    // Установим на графическую сцену объекты, получив их с помощью метода getElements
+    foreach (QGraphicsRectItem *item, SvgReader::getElements(path)) {
+        QGraphicsRectItem *rect = item;
+        scene->addItem(rect);
+    }
 }

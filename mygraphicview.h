@@ -19,7 +19,7 @@ public:
 signals:
 
 private slots:
-    void slotAlarmTimer();  /* slot timer overflow handler there will be repainting the widget
+    void slotAlarmTimer();  /* обработчик переполнения таймера слота будет перекрашивать виджет
                              * */
 
 private:
