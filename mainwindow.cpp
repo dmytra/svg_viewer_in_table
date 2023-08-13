@@ -33,8 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pushButton, SIGNAL(clicked()), this, SLOT(on_loadButton_clicked() ) );
 
     scene = new QGraphicsScene();
+    scene->setSceneRect(0,0,1800,1200);
     ui->graphicsView->setScene(scene);
-
 }
 
 void MainWindow::setPath(QString setpath) {
@@ -43,7 +43,6 @@ void MainWindow::setPath(QString setpath) {
 
 QString MainWindow::getPath() {
     return path;
-
 }
 
 MainWindow::~MainWindow()
@@ -59,7 +58,7 @@ void MainWindow::on_currentSelect(const QModelIndex &current, const QModelIndex 
 
             item = m_model->itemFromIndex(current);
             ui->textEdit->setText(item->text());
-            qDebug() << item->text();
+            //qDebug() << item->text();
             on_loadButton_clickedSVG();
         }
 }
