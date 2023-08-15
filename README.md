@@ -1,8 +1,9 @@
 # svg_viewer_in_table
 
-хорошо парсит SVG сгенерированний evelig "Qt/C++ - Lesson 045. SvgReader on the Qt. Loading data from SVG file into QGraphicsScene"
-см файл 'two_block.svg'
-остальное с тормазами и глюками!
+хорошо парсит SVG сгенерированний 
+<a href=https://evileg.com/en/post/149/>Qt/C++ - Lesson 045. SvgReader on the Qt. Loading data from SVG file into QGraphicsScene</a>
+см файл 'two_block.svg' 
+другие SVG с тормазами и глюками!
 
 **глпаное получен принципильний результат:**
 
