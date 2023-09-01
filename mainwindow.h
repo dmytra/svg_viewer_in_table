@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QString filePathMain, QWidget *parent = nullptr);
     ~MainWindow();
 
     int sizeN;
@@ -42,8 +42,8 @@ private:
     QStandardItemModel *m_model;                        //модель данных
     QItemSelectionModel *m_seleModel;
 
-    void on_load();
-    void     on_loadButton_clickedSVG();
+    void on_load(QString filePathMain);
+    void on_loadButton_clickedSVG();
 
 private slots:
     void on_loadButton_clicked();

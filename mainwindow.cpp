@@ -9,7 +9,7 @@
 #include <QSvgWidget>
 
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QString filePathMain, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_model = new QStandardItemModel(11111, 1, this);                    //Создать модель данных
     m_seleModel = new QItemSelectionModel(m_model);                      //Модель выбора предметов
 
-    connect(m_seleModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this,SLOT(on_currentSelect(QModelIndex,QModelIndex)));
-
     QPushButton* pushButton = new QPushButton("open SVG file：",this);
 
     ui->toolBar->addWidget(pushButton);
@@ -30,28 +28,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableView->setSelectionModel(m_seleModel);
     ui->tableView->setColumnWidth(0, 950);
 
+
     connect(pushButton, SIGNAL(clicked()), this, SLOT(on_loadButton_clicked() ) );
+    connect(m_seleModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this,SLOT(on_currentSelect(QModelIndex,QModelIndex)));
 
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,1800,1200);
     ui->graphicsView->setScene(scene);
-}
 
-void MainWindow::setPath(QString setpath) {
-    path = setpath;
-}
+    on_load(filePathMain);
+    on_loadButton_clickedSVG();
 
-QString MainWindow::getPath() {
-    return path;
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::on_currentSelect(const QModelIndex &current, const QModelIndex &previous) {
-        if (current.isValid()) { //状态栏的显示
+        if (current.isValid()) {
             QStandardItem* item;
 
             //QModelIndex index = m_model->index(current);
@@ -72,13 +63,13 @@ void MainWindow::on_loadButton_clicked()
 
     path = newPath;
 
-    on_load();
+    on_load(path);
 }
 
-void MainWindow::on_load()
+void MainWindow::on_load(QString filePathMain)
 {
     QDomDocument doc;
-
+    path = filePathMain;
     QFile file(path);
     if (file.open(QIODevice::ReadOnly) | doc.setContent(&file))
     {
@@ -127,4 +118,17 @@ void MainWindow::on_loadButton_clickedSVG()
         QGraphicsRectItem *rect = item;
         scene->addItem(rect);
     }
+}
+
+void MainWindow::setPath(QString setpath) {
+    path = setpath;
+}
+
+QString MainWindow::getPath() {
+    return path;
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
